@@ -9,8 +9,9 @@ export const connect = async () => {
     });
     connection.on("error", (error) => {
       console.log("Some error occurred in Database" + error.message);
+      // process.exit();
     });
-  } catch (error) {
-    console.log("Something went wrong" + error);
+  } catch (error: any) {
+    console.log("Something went wrong" + error.message);
   }
 };
