@@ -15,24 +15,25 @@ const transporter = nodemailer.createTransport({
 
 export const sendMail = async ({ email, typeOfEmail, userId }: any) => {
   console.log("sending email route");
-  console.log(typeOfEmail, email, userId);
-  const hashedToken = await bcrypt.hash(userId.toString(), 8);
-  if (typeOfEmail === "VERIFY") {
-    await User.findByIdAndUpdate(userId, {
-      $set: {
-        verifyToken: hashedToken,
-        verifyTokenExpiry: Date.now() + 3600000,
-      },
-    });
-  } else if (typeOfEmail === "RESET") {
-    await User.findByIdAndUpdate(userId, {
-      $set: {
-        forgotPasswordToken: hashedToken,
-        forgotPasswordTokenExpiry: Date.now() + 3600000,
-      },
-    });
-  }
   try {
+    console.log(typeOfEmail, email, userId);
+    const hashedToken = await bcrypt.hash(userId.toString(), 8);
+    if (typeOfEmail === "VERIFY") {
+      await User.findByIdAndUpdate(userId, {
+        $set: {
+          verifyToken: hashedToken,
+          verifyTokenExpiry: Date.now() + 3600000,
+        },
+      });
+    } else if (typeOfEmail === "RESET") {
+      await User.findByIdAndUpdate(userId, {
+        $set: {
+          forgotPasswordToken: hashedToken,
+          forgotPasswordTokenExpiry: Date.now() + 3600000,
+        },
+      });
+    }
+    console.log("reached mail option");
     const mailOptions = {
       from: "niroshshetty@gmail.com",
       to: email,
