@@ -14,9 +14,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendMail = async ({ email, typeOfEmail, userId }: any) => {
-  console.log("sending email route");
   try {
-    console.log(typeOfEmail, email, userId);
     const hashedToken = await bcrypt.hash(userId.toString(), 8);
     if (typeOfEmail === "VERIFY") {
       await User.findByIdAndUpdate(userId, {
@@ -33,7 +31,6 @@ export const sendMail = async ({ email, typeOfEmail, userId }: any) => {
         },
       });
     }
-    console.log("reached mail option");
     const mailOptions = {
       from: "niroshshetty@gmail.com",
       to: email,
@@ -50,7 +47,6 @@ export const sendMail = async ({ email, typeOfEmail, userId }: any) => {
             </p>`,
     };
     const info = await transporter.sendMail(mailOptions);
-    console.log("mail has been sent");
     return info;
   } catch (error: any) {
     console.log(error.message);

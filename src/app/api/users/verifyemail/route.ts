@@ -11,13 +11,16 @@ export async function POST(request: NextRequest) {
       verifyToken: token,
       verifyTokenExpiry: { $gt: Date.now() },
     });
+
     if (!user) {
       return NextResponse.json({ error: "invalid token" }, { status: 400 });
     }
+    console.log("hi");
+
     user.isVerified = true;
     user.verifyToken = undefined;
     user.verifyTokenExpiry = undefined;
-
+    await user.save();
     return NextResponse.json({
       message: "User verified successfully",
       success: true,
